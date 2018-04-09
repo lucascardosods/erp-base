@@ -1,0 +1,47 @@
+<html>
+
+<body class="login-body">
+
+<% include base.ejs %>
+
+
+
+<div class="login-wrapper">
+  <div id="logo-login" class="margin-bottom"></div>
+  <form method="POST" action="/login">
+
+    <div class="form-field">
+      <input type="text" name="username" value="<%= username ? username : '' %>" placeholder="Usuário" />
+    </div>
+
+    <div class="form-field">
+      <input type="password" name="password" placeholder="Senha" />
+    </div>
+
+
+    <div class="form-buttons">
+      <button type="submit" class="button">Entrar</button>
+    </div>
+
+  </form>
+</div>
+</body>
+
+
+
+<style>
+  #logo-login {
+    height: 160px;
+    background: url('/images/logo.png') no-repeat center;
+  }
+  .login-wrapper {
+    width:400px;
+    margin: 110px auto;
+    text-align: center;
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 0 0 0 4px rgba(26, 26, 26, 0.7);
+  }
+</style>
+
+</html>

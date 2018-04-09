@@ -1,0 +1,34 @@
+<html>
+
+<head>
+
+  <link rel="stylesheet" type="text/css" href="/stylesheets/admin.styl">
+
+  <link rel="stylesheet" tyminpe="text/css" href="/javascripts/notie.min.css">
+  <style>
+    /* override styles here */
+    .notie-container {
+      box-shadow: none;
+    }
+    html {
+      background: url(/images/wov.png) repeat left top;
+      background-size: 70px;
+    }
+  </style>
+  <script type="text/javascript" src="/javascripts/jquery-3.2.1.min.js"></script>
+
+</head>
+
+<script src="/javascripts/notie.min.js"></script>
+
+
+<% if(message) { %>
+<script>
+  <% if(message.error){ %>
+   notie.alert({ type: 'error', text: '<%= message.error %>' })
+  <% } %>
+</script>
+
+<% } %>
+
+
