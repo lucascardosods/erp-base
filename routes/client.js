@@ -11,6 +11,10 @@ clientRouter = function(router) {
     ClientController.newPage(req, res)
   });
 
+  router.post("/client/new", function (req, res) {
+    ClientController.postNewClient(req, res)
+  });
+
 
 };
 

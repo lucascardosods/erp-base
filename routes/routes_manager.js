@@ -5,7 +5,7 @@ const path = require('path');
 
 router = function (server){
   server.get('/', function(req, res, next){
-    res.send('Index :)');
+    res.redirect('/home');
   });
 
   let routes = [];
