@@ -1,4 +1,7 @@
 const ModuleServices = require("../services/module-services.js")();
+const ClientServices = require("../services/client-services.js")();
+var multer  = require('multer');
+var upload = multer({ dest: 'uploads/' });
 
 function bindPostNewClient(body) {
   if(body.name.length < 4 || body.port.length === 0 || body.systemName.length < 4){
@@ -28,18 +31,30 @@ ClientController = {
 
   postNewClient : async function(req, res) {
     console.log(req.body);
-    try{
-        console.log('try');
-        let client = bindPostNewClient(req.body);
+    var upload = multer().array('loginImage','smallImage');
+      upload(req, res, async function (err) {
+        if (err) {
+          console.log(err);
+          // An error occurred when uploading
+        }
+        else {
+          console.log('fine');
+          console.log(req.body);
+          try{
+            ClientServices.createSystemFolder(req.body.systemName,req.body.port);
+            let client = bindPostNewClient(req.body);
 
-      } catch(e){
-        console.log('catch');
-        let modules = await ModuleServices.findAllModules();
-        res.render('client/form.ejs', {
-          modules: modules,
-          message: "Erro de paramêtros"
-        });
-      }
+          } catch(e){
+            let modules = await ModuleServices.findAllModules();
+            res.render('client/form.ejs', {
+              modules: modules,
+              message: "Erro de paramêtros"
+            });
+          }
+        }
+      })
+
+
 
 
   }

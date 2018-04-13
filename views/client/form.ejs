@@ -4,7 +4,7 @@
     <div class="mui--appbar-height"></div>
     <div class="mui-container-fluid">
 
-        <form method="POST" action="/client/new">
+        <form method="POST" enctype='multipart/form-data' action="/client/new">
             <br>
             <h2> Novo sistema </h2><br>
             <div class="form-field">
@@ -20,9 +20,9 @@
             </div>
             <br>
 
-            <input type="file" name="login_image" accept="image/*"> | Imagem de login
+            <input type="file" name="loginImage" accept="image/*"> | Imagem de login
             <br><br>
-            <input type="file" name="small_image" accept="image/*"> | Imagem topo fixa
+            <input type="file" name="smallImage" accept="image/*"> | Imagem topo fixa
 
             <br>
             <h2> Módulos ativos: </h2>
