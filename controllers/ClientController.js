@@ -6,7 +6,7 @@ var upload = multer({ dest: 'uploads/' });
 function bindPostNewClient(body) {
   if(body.name.length < 4 || body.port.length === 0 || body.systemName.length < 4){
     console.log('err');
-     throw new Error("parameters");
+    throw new Error("parameters");
   }
 
 }
@@ -30,29 +30,34 @@ ClientController = {
   },
 
   postNewClient : async function(req, res) {
-    console.log(req.body);
-    var upload = multer().array('loginImage','smallImage');
-      upload(req, res, async function (err) {
-        if (err) {
-          console.log(err);
-          // An error occurred when uploading
-        }
-        else {
-          console.log('fine');
-          console.log(req.body);
-          try{
-            ClientServices.createSystemFolder(req.body.systemName,req.body.port);
-            let client = bindPostNewClient(req.body);
+    // var upload = multer().array('loginImage','smallImage');
+    //   upload(req, res, async function (err) {
+    //     if (err) {
+    //       console.log(err);
+    //       // An error occurred when uploading
+    //     }
+    //     else {
+    let mod = "";
+    if(req.body.clients){
+      mod += "*clients*";
+    }
+    if(req.body.financial){
+      mod += "*financial*";
+    }
+    console.log(mod);
+    try{
+      ClientServices.createSystemFolder(req.body.systemName,req.body.port, mod);
+      let client = bindPostNewClient(req.body);
 
-          } catch(e){
-            let modules = await ModuleServices.findAllModules();
-            res.render('client/form.ejs', {
-              modules: modules,
-              message: "Erro de paramêtros"
-            });
-          }
-        }
-      })
+    } catch(e){
+      let modules = await ModuleServices.findAllModules();
+      res.render('client/form.ejs', {
+        modules: modules,
+        message: "Erro de paramêtros"
+      });
+    }
+    // }
+    // })
 
 
 

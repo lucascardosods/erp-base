@@ -14,8 +14,16 @@ module.exports = function () {
     createSystemFolder: function (clientSystemName, port) {
       console.log('create system folder');
       const exec = require('child_process').exec;
-      var yourscript = exec('sh new_client.sh '+clientSystemName+' '+port,
+      var yourscript = exec('sh new_client.sh '+clientSystemName+' '+port, { detached: true},
         (error, stdout, stderr) => {
+          var yourscript = exec('sh new_client2.sh '+clientSystemName+' '+port, { detached: true},
+            (error, stdout, stderr) => {
+              console.log(`${stdout}`);
+              console.log(`${stderr}`);
+              if (error !== null) {
+                console.log(`exec error: ${error}`);
+              }
+            });
           console.log(`${stdout}`);
           console.log(`${stderr}`);
           if (error !== null) {
