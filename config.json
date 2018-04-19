@@ -1,4 +1,5 @@
 {
   "SESSION_SECRET" : "93jf02jf",
-  "CRYPTOKEY" : "$%%$ˆ*ˆ(ˆ*@#!@#"
+  "CRYPTOKEY" : "$%%$ˆ*ˆ(ˆ*@#!@#",
+  "COLLECTION_NAME" : "manager"
 }

@@ -11,6 +11,8 @@ function bindPostNewClient(body) {
 
 }
 
+const authServices = require("../auth/authServices.js")();
+
 ClientController = {
 
 
@@ -44,7 +46,6 @@ ClientController = {
     if(req.body.financial){
       mod += "*financial*";
     }
-    console.log(mod);
     try{
       ClientServices.createSystemFolder(req.body.systemName,req.body.port, mod);
       let client = bindPostNewClient(req.body);

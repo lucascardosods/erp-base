@@ -2,24 +2,26 @@ module.exports = function () {
 
   const model = require('../models');
   const CryptoJS = require("crypto-js");
+  const userDAO = require('../DAO/userDAO');
 
   return {
 
-    checkCredentials : function(username, userPass, callback){
-      model.User.findOne({username: username}, function(e,user){
+    checkCredentials : async function(username, userPass){
+      console.log("check credentiasls");
+      const user = await userDAO.connection().findOne({username: username});
         console.log(user);
         if(user){
           if(userPass === user.password){
             console.log('correct password.');
-            return callback(user)
+            return user
           }
           else {
-            return callback(new Error('userOrPasswordNotFound'));
+            return new Error('userOrPasswordNotFound');
           }
         } else {
-          return callback(new Error('userOrPasswordNotFound'));
+          console.log(e)
+          return new Error('userOrPasswordNotFound');
         }
-      })
     }
   }
 };

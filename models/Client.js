@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
+let mongoose = require('mongoose');
 
 
-var Client = mongoose.Schema({
+let Client = mongoose.Schema({
 
   name: {type: String, required: true, },
   systemName: {type: String, required: true, },
@@ -10,7 +10,7 @@ var Client = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Module'
   }],
-  creationDate: {type: Date, required: true, },
+  creationDate: {type: Date, Default: new Date() },
 
 });
 

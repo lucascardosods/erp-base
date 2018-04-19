@@ -1,26 +1,17 @@
 module.exports = function () {
 
-  // let mongoose = require('mongoose');
+  const moduleDAO = require('../DAO/ModuleDAO');
 
   return {
 
 
     findAllModules: async function () {
-      return [{
-        name: "Clientes",
-        folderName: "clients",
-        menuData: "not",
-        repoURL: "https://github.com/lucascardosods/erp-module-clients.git",
-      },
-        {
-          name: "Financeiro",
-          folderName: "financial",
-          menuData: "not",
-          repoURL: "https://github.com/lucascardosods/erp-module-financial.git",
-        }
-
-      ]
-
+      try {
+        return await moduleDAO.connection().find({}).toArray();
+      } catch(er){
+        console.log(er);
+        return (new Error('connection-error'));
+      }
     },
 
 

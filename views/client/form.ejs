@@ -29,7 +29,7 @@
 
             <% if(modules) { %>
                 <% modules.forEach(function (module){ %>
-                     <input type="radio" name="<%= module.folderName %>" value="<%= module.folderName %>"> <%= module.name %><br>
+                     <input type="checkbox" name="<%= module.folderName %>" value="<%= module.folderName %>"> <%= module.name %><br>
               <% }) %>
             <% } %>
             <br>

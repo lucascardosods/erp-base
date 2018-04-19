@@ -7,16 +7,14 @@ let bodyParser = require("body-parser");
 let config = require("./config");
 let session = require("express-session");
 let mongoose = require("mongoose");
-let helmet = require("helmet");
 const MongoStore = require("connect-mongo")(session);
 let router = require("./routes/routes_manager");
 let controller = require("./routes/routes_manager");
 var fs = require('fs');
 global.__CRYPTOKEY = config.CRYPTOKEY;
+global.__CONFIG = config;
 
-const MONGO_URL =
-  process.env.MONGODB_URI ||
-  "mongodb://erp_admin:qwerty123456@54.166.241.48/erp_manager";
+const MONGO_URL = "mongodb+srv://admin:admin@cluster0-xbyc5.mongodb.net/";
 //
 // var proxy = require('redbird')({port: 8000, xfwd: false});
 //
@@ -26,29 +24,13 @@ const MONGO_URL =
 //
 
 var app = express();
-// app.listen(process.env.PORT || 5050);
 
+let MongoClient = require('mongodb').MongoClient;
 
-//copy the $file to $dir2
-// var copyFile = (file, dir2)=>{
-//   //include the fs, path modules
-//   var fs = require('fs');
-//   var path = require('path');
-//
-//   //gets file name and adds it to dir2
-//   var f = path.basename(file);
-//   var source = fs.createReadStream(file);
-//   var dest = fs.createWriteStream(path.resolve(dir2, f));
-//
-//   source.pipe(dest);
-//   source.on('end', function() { console.log('Succesfully copied'); });
-//   source.on('error', function(err) { console.log(err); });
-// };
-
-//example, copy file1.htm from 'test/dir_1/' to 'test/'
-// copyFile('../9feet.zip', './test/');
-
-// mongoose.connect(MONGO_URL, { useMongoClient: true });
+MongoClient.connect(MONGO_URL, function(err, connection) {
+  global._connection = connection;
+  console.log('Connection is alive.');
+});
 
 // var db = mongoose.connection;
 // db.on('error', console.error.bind(console, 'connection error:'));
@@ -57,6 +39,7 @@ var app = express();
 // });
 // app.use(helmet());
 //
+
 app.use(
   session({
     secret: config.SESSION_SECRET,
@@ -72,7 +55,6 @@ app.set("view engine", "ejs");
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -107,8 +89,7 @@ app.use(function(err, req, res, next) {
   res.render("error");
 });
 
-app.listen(process.env.PORT || 80);
-
+app.listen(process.env.PORT || 8080);
 
 console.log('ERP Manager online.');
 

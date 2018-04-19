@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+let mongoose = require('mongoose');
 
-var UserSchema = mongoose.Schema({
+let User = mongoose.Schema({
 
   username: {type: String, required: true, index: { unique: true }},
   password: {type: String, required: true },
@@ -8,5 +8,4 @@ var UserSchema = mongoose.Schema({
 
 });
 
-
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', User);

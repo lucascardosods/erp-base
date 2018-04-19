@@ -1,13 +1,18 @@
 module.exports = function () {
 
-  // let mongoose = require('mongoose');
+  const clientDAO = require('../DAO/ClientDAO');
 
   return {
 
 
     findAllClients: async function () {
-      return []
-
+      try {
+        return await clientDAO.connection().findOne().toArray();
+      } catch(er){
+        console.log('er');
+        console.log(er);
+        return (new Error('connection-error'));
+      }
     },
 
 
