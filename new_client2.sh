@@ -9,5 +9,4 @@ npm update
 cd routes
 rm .DS_Store
 cd ..
-node app.js
 echo "finished."

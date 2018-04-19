@@ -5,32 +5,40 @@ module.exports = function () {
   return {
 
 
-    findAllClients: async function () {
+    listClients: async function () {
       try {
-        return await clientDAO.connection().findOne().toArray();
+        return await clientDAO.connection().find().toArray();
       } catch(er){
-        console.log('er');
-        console.log(er);
         return (new Error('connection-error'));
       }
     },
 
+    createClient: async function (client) {
+      console.log('create client');
+      try {
+        clientDAO.connection().insert(client, function (res) {
+          return res;
+        })
+      } catch(er){
+        console.log(er);
+        return er;
+      }
+    },
 
-    createSystemFolder: function (clientSystemName, port) {
+
+    createSystemFolder: function (clientSystemName, port, mod, callback) {
       console.log('create system folder');
       const exec = require('child_process').exec;
       var yourscript = exec('sh new_client.sh '+clientSystemName+' '+port, { detached: true},
         (error, stdout, stderr) => {
           var yourscript = exec('sh new_client2.sh '+clientSystemName+' '+port, { detached: true},
             (error, stdout, stderr) => {
-              console.log(`${stdout}`);
-              console.log(`${stderr}`);
               if (error !== null) {
-                console.log(`exec error: ${error}`);
+                return callback(new Error('folder'));
+              } else {
+                return callback()
               }
             });
-          console.log(`${stdout}`);
-          console.log(`${stderr}`);
           if (error !== null) {
             console.log(`exec error: ${error}`);
           }

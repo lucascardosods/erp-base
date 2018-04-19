@@ -1,30 +1,41 @@
 const ModuleServices = require("../services/module-services.js")();
 const ClientServices = require("../services/client-services.js")();
 var multer  = require('multer');
+let mongoose = require('mongoose');
+
 var upload = multer({ dest: 'uploads/' });
 
 function bindPostNewClient(body) {
   if(body.name.length < 4 || body.port.length === 0 || body.systemName.length < 4){
     console.log('err');
     throw new Error("parameters");
+  } else {
+    let client = new mongoose.models.Client();
+    client.name = body.name;
+    client.systemName = body.systemName
+    client.port = body.port;
+    console.log(client);
+    return client;
   }
 
 }
 
-const authServices = require("../auth/authServices.js")();
 
 ClientController = {
 
 
-  listPage : function(req, res) {
+  listPage : async function(req, res) {
+    let clients = await ClientServices.listClients();
     res.render('client/list.ejs', {
-      message: null
+      message: null,
+      clients: clients
     });
 
   },
 
   newPage : async function(req, res) {
     let modules = await ModuleServices.findAllModules();
+    console.log(modules);
     res.render('client/form.ejs', {
       modules: modules,
       message: null
@@ -47,8 +58,22 @@ ClientController = {
       mod += "*financial*";
     }
     try{
-      ClientServices.createSystemFolder(req.body.systemName,req.body.port, mod);
-      let client = bindPostNewClient(req.body);
+      ClientServices.createSystemFolder(req.body.systemName,req.body.port, mod, async function(er){
+        if(er){
+          console.log(er);
+          throw new Error("fail");
+        }else {
+          console.log('else');
+              let response = await ClientServices.createClient(bindPostNewClient(req.body));
+          console.log(response);
+              if(!response){
+                res.send({"status": "success"})
+              } else {
+                res.send({"status": "failure"})
+              }
+            }
+
+      });
 
     } catch(e){
       let modules = await ModuleServices.findAllModules();
