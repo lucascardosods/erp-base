@@ -15,7 +15,7 @@
             <div class="table-content">
                 <% clients.forEach(function (client){ %>
                 <div class="table-row">
-                    <div class="table-data"><a href="/client/view/<%- client._id %>">Detalhes</a></div>
+                    <div class="table-data"><a href="/client/activate/<%- client.systemName %>">Ativar/Desativar</a></div>
                     <div class="table-data"><%- client.name %></div>
                     <div class="table-data"><%- client.systemName %></div>
                     <div class="table-data"><%- client.port %></div>

@@ -35,11 +35,22 @@ ClientController = {
 
   newPage : async function(req, res) {
     let modules = await ModuleServices.findAllModules();
-    console.log(modules);
     res.render('client/form.ejs', {
       modules: modules,
       message: null
     });
+  },
+
+  activateCient : async function(req, res) {
+    console.log(req.params.systemFolder);
+    try {
+      ClientServices.activateCientBySystemFolder(req.params.systemFolder, function(er){
+        console.log(er);
+      });
+    } catch(e){
+      console.log('er');
+    }
+    res.redirect("/client/list")
   },
 
   postNewClient : async function(req, res) {
@@ -64,14 +75,17 @@ ClientController = {
           throw new Error("fail");
         }else {
           console.log('else');
-              let response = await ClientServices.createClient(bindPostNewClient(req.body));
+          let response = await ClientServices.createClient(bindPostNewClient(req.body));
           console.log(response);
-              if(!response){
-                res.send({"status": "success"})
-              } else {
-                res.send({"status": "failure"})
-              }
-            }
+          if(!response){
+            let modules = await ModuleServices.findAllModules();
+            res.render('client/form.ejs', {
+              modules: modules,
+              message: "Criado com sucesso."
+            });              } else {
+            res.send({"status": "failure"})
+          }
+        }
 
       });
 

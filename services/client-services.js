@@ -1,6 +1,7 @@
 module.exports = function () {
 
   const clientDAO = require('../DAO/ClientDAO');
+  const exec = require('child_process').exec;
 
   return {
 
@@ -27,8 +28,7 @@ module.exports = function () {
 
 
     createSystemFolder: function (clientSystemName, port, mod, callback) {
-      console.log('create system folder');
-      const exec = require('child_process').exec;
+      console.log('Start creating system folder');
       var yourscript = exec('sh new_client.sh '+clientSystemName+' '+port, { detached: true},
         (error, stdout, stderr) => {
           var yourscript = exec('sh new_client2.sh '+clientSystemName+' '+port, { detached: true},
@@ -45,6 +45,20 @@ module.exports = function () {
         });
     },
 
+    activateCientBySystemFolder: function(systemName, callback){
+      console.log('Start activating '+systemName);
+      var script = exec('sh activate.sh '+systemName, { detached: true},
+        (error, stdout, stderr) => {
+          console.log(stdout);
+          console.log(stderr);
+          if (error !== null) {
+            return callback(new Error('folder'));
+          } else {
+            return callback()
+          }
+        });
+
+    }
 
   }
 

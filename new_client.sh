@@ -2,7 +2,7 @@ cd ..
 cp -r base ./clients/$1
 chmod 777 clients/$1
 cd clients/$1
-echo "{ \"PORT\" : \"$2\", \"NAME\" : \"$4\"}" >> base_config.json
+echo "{ \"PORT\" : \"$2\", \"NAME\" : \"$1\"}" >> base_config.json
 cd ..
 echo $3
 var1 = clients
