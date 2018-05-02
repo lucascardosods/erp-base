@@ -15,13 +15,11 @@ module.exports = function () {
     },
 
     createClient: async function (client) {
-      console.log('create client');
       try {
         clientDAO.connection().insert(client, function (res) {
           return res;
         })
       } catch(er){
-        console.log(er);
         return er;
       }
     },
@@ -52,7 +50,7 @@ module.exports = function () {
           console.log(stdout);
           console.log(stderr);
           if (error !== null) {
-            return callback(new Error('folder'));
+            return callback(new Error('fail'));
           } else {
             return callback()
           }

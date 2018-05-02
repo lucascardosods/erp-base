@@ -1,8 +1,7 @@
 <% include base.ejs %>
-<link rel="stylesheet" type="text/css" href="/stylesheets/table.css">
 
 <head>
-
+  <link rel="stylesheet" type="text/css" href="/stylesheets/table.css">
   <link rel="stylesheet" type="text/css" href="/stylesheets/base_logged.css">
   <link rel="stylesheet" type="text/css" href="/stylesheets/mui.min.css">
   <script src="/javascripts/side_menu.js"></script>
@@ -24,8 +23,8 @@
     <li>
       <strong>Clientes</strong>
       <ul>
-        <li><a href="/client/new">Novo</a></li>
-        <li><a href="/client/list">Lista</a></li>
+        <second-child><li><a href="/client/new">Novo</a></li></second-child>
+        <second-child><li><a href="/client/list">Lista</a></li></second-child>
       </ul>
     </li>
 
@@ -37,6 +36,11 @@
     <div class="mui-container-fluid">
       <a class="sidedrawer-toggle mui--visible-xs-inline-block mui--visible-sm-inline-block js-show-sidedrawer">☰</a>
       <a class="sidedrawer-toggle mui--hidden-xs mui--hidden-sm js-hide-sidedrawer">☰</a>
-      <a class="sidedrawer-toggle">ERP - Sistema de Gerenciamento</a>
+      <%if((typeof title != "undefined" ? title : "")){%>
+      <a class="sidedrawer-toggle"> <%- title %></a>
+      <% } else {%>
+      <a class="sidedrawer-toggle">Gerenciador</a>
+
+      <% } %>
   </div>
 </header>

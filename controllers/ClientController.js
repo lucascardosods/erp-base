@@ -5,14 +5,22 @@ let mongoose = require('mongoose');
 
 var upload = multer({ dest: 'uploads/' });
 
-function bindPostNewClient(body) {
+async function bindPostNewClient(body) {
   if(body.name.length < 4 || body.port.length === 0 || body.systemName.length < 4){
     console.log('err');
     throw new Error("parameters");
   } else {
+    let ar = [];
+    for (let key in body){
+      if(body[key].indexOf("erp-module") !== -1){
+        ar.push(body[key])
+      }
+    }
+    let modules = await ModuleServices.findAllModules({'folderName' : {'$in' : ar}});
     let client = new mongoose.models.Client();
+    client.modules = modules;
     client.name = body.name;
-    client.systemName = body.systemName
+    client.systemName = body.systemName;
     client.port = body.port;
     console.log(client);
     return client;
@@ -27,8 +35,9 @@ ClientController = {
   listPage : async function(req, res) {
     let clients = await ClientServices.listClients();
     res.render('client/list.ejs', {
-      message: null,
-      clients: clients
+      message: req.body.message,
+      clients: clients,
+      title: "Clientes Cadastrados"
     });
 
   },
@@ -37,7 +46,8 @@ ClientController = {
     let modules = await ModuleServices.findAllModules();
     res.render('client/form.ejs', {
       modules: modules,
-      message: null
+      message: null,
+      title: "Novo Cliente"
     });
   },
 
@@ -53,7 +63,7 @@ ClientController = {
     res.redirect("/client/list")
   },
 
-  postNewClient : async function(req, res) {
+  postNewClient : function(req, res, callback) {
     // var upload = multer().array('loginImage','smallImage');
     //   upload(req, res, async function (err) {
     //     if (err) {
@@ -71,36 +81,23 @@ ClientController = {
     try{
       ClientServices.createSystemFolder(req.body.systemName,req.body.port, mod, async function(er){
         if(er){
-          console.log(er);
-          throw new Error("fail");
+          throw new Error("folder_creation");
         }else {
-          console.log('else');
-          let response = await ClientServices.createClient(bindPostNewClient(req.body));
-          console.log(response);
+          let client = await bindPostNewClient(req.body);
+          let response = await ClientServices.createClient(client);
           if(!response){
-            let modules = await ModuleServices.findAllModules();
-            res.render('client/form.ejs', {
-              modules: modules,
-              message: "Criado com sucesso."
-            });              } else {
-            res.send({"status": "failure"})
+            return callback()
+          } else {
+            throw new Error("user_creation");
           }
         }
 
       });
 
     } catch(e){
-      let modules = await ModuleServices.findAllModules();
-      res.render('client/form.ejs', {
-        modules: modules,
-        message: "Erro de paramêtros"
-      });
+      throw new Error("parameters");
+
     }
-    // }
-    // })
-
-
-
 
   }
 

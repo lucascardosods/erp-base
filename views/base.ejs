@@ -24,9 +24,13 @@
 
 <% if(message) { %>
 <script>
-  <% if(message.error){ %>
-   notie.alert({ type: 'error', text: '<%= message.error %>' })
-  <% } %>
+  window.onload = function messages() {
+    <% if(message.error){ %>
+    notie.alert({ type: 'error', text: '<%= message.error %>' })
+    <% } else if(message.success) {%>
+    notie.alert({ type: 'success', text: '<%= message.success %>' })
+    <% } %>
+  }
 </script>
 
 <% } %>

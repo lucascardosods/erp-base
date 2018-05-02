@@ -5,9 +5,10 @@ module.exports = function () {
   return {
 
 
-    findAllModules: async function () {
+    findAllModules: async function (condition) {
+      console.log(condition);
       try {
-        return await moduleDAO.connection().find({}).toArray();
+        return await moduleDAO.connection().find(condition).toArray();
       } catch(er){
         console.log(er);
         return (new Error('connection-error'));

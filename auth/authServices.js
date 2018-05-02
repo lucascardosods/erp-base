@@ -19,7 +19,6 @@ module.exports = function () {
             return new Error('userOrPasswordNotFound');
           }
         } else {
-          console.log(e)
           return new Error('userOrPasswordNotFound');
         }
     }

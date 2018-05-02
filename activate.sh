@@ -1,3 +1,3 @@
 cd ..
 cd clients/$1
-node app.js
+forever start app.js

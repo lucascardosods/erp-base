@@ -42,7 +42,7 @@ buttons {
   left: -200px;
   overflow: auto;
   z-index: 2;
-  background: url(/images/wov.png) repeat left top;
+  background-color: #3A6181;
   transition: transform 0.2s;
 }
 
@@ -146,13 +146,27 @@ buttons {
 }
 
 #sidedrawer strong {
+  color: #FFFFFF;
   display: block;
   padding: 15px 22px;
   cursor: pointer;
 }
 
+#sidedrawer second-child {
+  color: #ffffff;
+  display: block;
+  padding: 15px;
+  cursor: pointer;
+}
+
+#sidedrawer second-child:hover {
+  background: #422B2B;
+  display: block;
+  cursor: pointer;
+}
+
 #sidedrawer strong:hover {
-  background-color: #4f78b8;
+  background-color: #422B2B;
 }
 
 #sidedrawer strong + ul > li {
@@ -160,16 +174,3 @@ buttons {
 }
 
 
-/**
- * Footer CSS
- */
-
-#footer {
-  background-color: #0288D1;
-  color: #fff;
-}
-
-#footer a {
-  color: #fff;
-  text-decoration: underline;
-}
