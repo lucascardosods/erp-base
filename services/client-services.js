@@ -25,12 +25,16 @@ module.exports = function () {
     },
 
 
-    createSystemFolder: function (clientSystemName, port, mod, callback) {
+    createSystemFolder: function (clientSystemName, port, mod, menu, callback) {
       console.log('Start creating system folder');
-      var yourscript = exec('sh new_client.sh '+clientSystemName+' '+port, { detached: true},
+      var yourscript = exec('sh scripts/new_client.sh '+clientSystemName+' '+port+ ' '+mod, { detached: true},
         (error, stdout, stderr) => {
-          var yourscript = exec('sh new_client2.sh '+clientSystemName+' '+port, { detached: true},
+          console.log('Creating system 2....');
+          var yourscript = exec('sh scripts/new_client2.sh '+clientSystemName+' \"' +menu+ '\" '+mod, { detached: true},
             (error, stdout, stderr) => {
+              console.log(stdout);
+              console.log(stderr);
+
               if (error !== null) {
                 return callback(new Error('folder'));
               } else {
@@ -45,7 +49,19 @@ module.exports = function () {
 
     activateCientBySystemFolder: function(systemName, callback){
       console.log('Start activating '+systemName);
-      var script = exec('sh activate.sh '+systemName, { detached: true},
+      var script = exec('sh scripts/activate.sh '+systemName, { detached: true},
+        (error, stdout, stderr) => {
+          console.log(stdout);
+          console.log(stderr);
+          if (error !== null) {
+            return callback(new Error('fail'));
+          } else {
+            return callback()
+          }
+        });
+    },
+    stopCientBySystemFolder: function(systemName, callback){
+      var script = exec('sh stop.sh '+systemName, { detached: true},
         (error, stdout, stderr) => {
           console.log(stdout);
           console.log(stderr);

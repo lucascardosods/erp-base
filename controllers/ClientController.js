@@ -7,7 +7,6 @@ var upload = multer({ dest: 'uploads/' });
 
 async function bindPostNewClient(body) {
   if(body.name.length < 4 || body.port.length === 0 || body.systemName.length < 4){
-    console.log('err');
     throw new Error("parameters");
   } else {
     let ar = [];
@@ -22,8 +21,7 @@ async function bindPostNewClient(body) {
     client.name = body.name;
     client.systemName = body.systemName;
     client.port = body.port;
-    console.log(client);
-    return client;
+    return {"client" : client, "modules" : modules};
   }
 
 }
@@ -52,7 +50,6 @@ ClientController = {
   },
 
   activateCient : async function(req, res) {
-    console.log(req.params.systemFolder);
     try {
       ClientServices.activateCientBySystemFolder(req.params.systemFolder, function(er){
         console.log(er);
@@ -63,7 +60,18 @@ ClientController = {
     res.redirect("/client/list")
   },
 
-  postNewClient : function(req, res, callback) {
+  deactivateCient : async function(req, res) {
+    try {
+      ClientServices.stopCientBySystemFolder(req.params.systemFolder, function(er){
+        console.log(er);
+      });
+    } catch(e){
+      console.log('er');
+    }
+    res.redirect("/client/list")
+  },
+
+  postNewClient : async function(req, res, callback) {
     // var upload = multer().array('loginImage','smallImage');
     //   upload(req, res, async function (err) {
     //     if (err) {
@@ -71,33 +79,50 @@ ClientController = {
     //       // An error occurred when uploading
     //     }
     //     else {
-    let mod = "";
-    if(req.body.clients){
-      mod += "*clients*";
+    let modsForGit = "";
+    console.log(req.body);
+    if(req.body["erp-module-clients"]){
+      modsForGit += "*clients*";
     }
-    if(req.body.financial){
-      mod += "*financial*";
+    if(req.body["erp-module-financial"]){
+      modsForGit += "*financial*";
     }
-    try{
-      ClientServices.createSystemFolder(req.body.systemName,req.body.port, mod, async function(er){
-        if(er){
-          throw new Error("folder_creation");
-        }else {
-          let client = await bindPostNewClient(req.body);
-          let response = await ClientServices.createClient(client);
-          if(!response){
-            return callback()
-          } else {
-            throw new Error("user_creation");
-          }
-        }
-
-      });
-
-    } catch(e){
+    console.log('mod');
+    console.log(modsForGit);
+    let client;
+    let modules;
+    try {
+      let response = await bindPostNewClient(req.body);
+      client = response["client"];
+      modules = response["modules"];
+    } catch(er){
       throw new Error("parameters");
-
     }
+    let response = await ClientServices.createClient(client);
+    if(!response){
+      try{
+        let menu = "";
+
+        modules.forEach(function(module){
+          menu += module.menuData;
+        });
+
+        ClientServices.createSystemFolder(req.body.systemName,req.body.port, modsForGit, menu, function(er){
+          if(er){
+            throw new Error("folder_creation");
+          }else {
+            callback()
+          }
+        });
+
+      } catch(e){
+        throw new Error("parameters");
+
+      }
+    } else {
+      throw new Error("user_creation");
+    }
+
 
   }
 

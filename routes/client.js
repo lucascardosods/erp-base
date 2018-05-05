@@ -6,7 +6,6 @@ clientRouter = function(router) {
     ClientController.listPage(req, res)
   });
 
-
   router.get("/client/new", function (req, res) {
     ClientController.newPage(req, res)
   });
@@ -26,6 +25,10 @@ clientRouter = function(router) {
 
   router.get("/client/activate/:systemFolder", function (req, res) {
     ClientController.activateCient(req, res)
+  });
+
+  router.get("/client/deactivate/:systemFolder", function (req, res) {
+    ClientController.deactivateCient(req, res)
   });
 
 };
