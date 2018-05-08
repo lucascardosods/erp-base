@@ -29,6 +29,7 @@ let MongoClient = require('mongodb').MongoClient;
 
 MongoClient.connect(MONGO_URL, function(err, connection) {
   global._connection = connection;
+  console.log(err);
   console.log('Connection is alive.');
 });
 

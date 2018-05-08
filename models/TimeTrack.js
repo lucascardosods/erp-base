@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
+let mongoose = require('mongoose');
 
-var TimeTrack = mongoose.Schema({
+let TimeTrack = mongoose.Schema({
 
-  started: {type: Date, required: true, },
+  started: {type: Date, default: new Date(), required: true, },
   stopped: {type: Date },
   client: {
     type: mongoose.Schema.Types.ObjectId,
@@ -15,6 +15,5 @@ var TimeTrack = mongoose.Schema({
   }],
 
 });
-
 
 module.exports = mongoose.model('TimeTrack', TimeTrack);

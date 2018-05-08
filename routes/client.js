@@ -24,12 +24,25 @@ clientRouter = function(router) {
   });
 
   router.get("/client/activate/:systemFolder", function (req, res) {
-    ClientController.activateCient(req, res)
+    try {
+      ClientController.activateCient(req, res)
+    } catch(e){
+      req.body.message = {"error" : "Falha na ativação."};
+      return ClientController.listPage(req, res);
+    }
+    req.body.message = {"success" : "Usuário ativado com sucesso."};
+    return ClientController.listPage(req, res);
   });
 
   router.get("/client/deactivate/:systemFolder", function (req, res) {
-    ClientController.deactivateCient(req, res)
-  });
+    try {
+      ClientController.deactivateCient(req, res)
+    } catch(e){
+      req.body.message = {"error" : "Falha na desativação."};
+      return ClientController.listPage(req, res);
+    }
+    req.body.message = {"success" : "Usuário desativado com sucesso."};
+    return ClientController.listPage(req, res);  });
 
 };
 

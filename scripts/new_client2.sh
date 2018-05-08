@@ -3,16 +3,15 @@ cd ..
 cd clients
 
 var1 = clients
+var2 = financial
 if [[ $3 == *"$var1"* ]]; then
     cp -a erp-module-clients/. $1/
     rm -r erp-module-clients
 fi
-var2 = financial
-if [[ $3 == *"var2"* ]]; then
+if [[ $3 == *"$var2"* ]]; then
     cp -a erp-module-financial/. $1/
     rm -r erp-module-financial
 fi
-
 cd $1
 npm update
 cd routes
@@ -23,7 +22,7 @@ cd views
 menu="<% include base.ejs %>
 
 <head>
-
+    <link rel="stylesheet" type=\"text/css\" href=\"/stylesheets/table.css\">
   <link rel=\"stylesheet\" type=\"text/css\" href=\"/stylesheets/base_logged.css\">
   <link rel=\"stylesheet\" type=\"text/css\" href=\"/stylesheets/mui.min.css\">
   <script src=\"/javascripts/side_menu.js\"></script>
@@ -51,7 +50,7 @@ menu="<% include base.ejs %>
     <div class=\"mui-container-fluid\">
       <a class=\"sidedrawer-toggle mui--visible-xs-inline-block mui--visible-sm-inline-block js-show-sidedrawer\">☰</a>
       <a class=\"sidedrawer-toggle mui--hidden-xs mui--hidden-sm js-hide-sidedrawer\">☰</a>
-      <a class=\"sidedrawer-toggle\">Test</a>
+      <a class=\"sidedrawer-toggle\"></a>
   </div>
 </header>"
 find="<!--menu-->"

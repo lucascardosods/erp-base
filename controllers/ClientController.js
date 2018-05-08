@@ -50,25 +50,21 @@ ClientController = {
   },
 
   activateCient : async function(req, res) {
-    try {
       ClientServices.activateCientBySystemFolder(req.params.systemFolder, function(er){
-        console.log(er);
+        if(er){
+          throw new Error(er);
+        }
       });
-    } catch(e){
-      console.log('er');
-    }
-    res.redirect("/client/list")
   },
 
   deactivateCient : async function(req, res) {
     try {
       ClientServices.stopCientBySystemFolder(req.params.systemFolder, function(er){
-        console.log(er);
+
       });
     } catch(e){
-      console.log('er');
+      throw new Error("deactivate");
     }
-    res.redirect("/client/list")
   },
 
   postNewClient : async function(req, res, callback) {
