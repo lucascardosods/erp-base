@@ -2,8 +2,10 @@ module.exports = function () {
 
   const clientDAO = require('../DAO/ClientDAO');
   const trackTimeDAO = require('../DAO/TimeTrackDAO');
+  const contractDAO = require('../DAO/contractDAO');
   const exec = require('child_process').exec;
   const mongoose = require('mongoose');
+  const types = require("../helpers/types.js");
 
   return {
 
@@ -26,14 +28,35 @@ module.exports = function () {
       }
     },
 
+    registerClientContract: function (body, clientId) {
+      let contract = new mongoose.models.Contract();
+      contract.client = mongoose.Types.ObjectId(clientId);
+      if(body.charge === 'time'){
+        if(body.timetype === 'automatic'){
+          contract.pricePerRequest = "0.03";
+          contract.type = types.Contract.TIME_AUTOMATIC;
+        } else if(body.timetype === 'manual') {
+          contract.pricePerRequest = "0.02";
+          contract.type = types.Contract.TIME_MANUAL;
 
-    createSystemFolder: function (clientSystemName, port, mod, menu, callback) {
+        }
+      } else if(body.charge === 'request'){
+        contract.pricePerRequest = "0.01";
+        contract.type = types.Contract.REQUEST._id;
+      }
+      console.log(contract);
+      contractDAO.connection().insert(contract)
+
+    },
+
+
+    createSystemFolder: function (client, mod, menu, callback) {
       console.log('Start creating system folder');
-      var yourscript = exec('sh scripts/new_client.sh '+clientSystemName+' '+port+ ' '+mod, { detached: true},
+      var yourscript = exec('sh scripts/new_client.sh '+client.systemName+' '+client.port+ ' '+mod+' '+client._id, { detached: true},
         (error, stdout, stderr) => {
           console.log(stdout);
           console.log('Creating system 2....');
-          var yourscript = exec('sh scripts/new_client2.sh '+clientSystemName+' \"' +menu+ '\" '+mod, { detached: true},
+          var yourscript = exec('sh scripts/new_client2.sh '+client.systemName+' \"' +menu+ '\" '+mod, { detached: true},
             (error, stdout, stderr) => {
               console.log(stdout);
               console.log(stderr);

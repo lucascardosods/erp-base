@@ -5,8 +5,7 @@ module.exports = function () {
   return {
 
 
-    findAllModules: async function (condition) {
-
+    createContract: async function (condition) {
       try {
         return await moduleDAO.connection().find(condition).toArray();
       } catch(er){

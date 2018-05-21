@@ -1,8 +1,8 @@
 module.exports = function () {
 
-  const model = require('../models');
-  const CryptoJS = require("crypto-js");
+  // const CryptoJS = require("crypto-js");
   const userDAO = require('../DAO/userDAO');
+  const model = require('../models');
 
   return {
 

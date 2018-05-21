@@ -13,42 +13,29 @@ let controller = require("./routes/routes_manager");
 var fs = require('fs');
 global.__CRYPTOKEY = config.CRYPTOKEY;
 global.__CONFIG = config;
-
+const model = require('./models/index');
 const MONGO_URL = "mongodb+srv://admin:admin@cluster0-xbyc5.mongodb.net/";
-//
-// var proxy = require('redbird')({port: 8000, xfwd: false});
-//
-// // proxy.register("http://localhost:8000/g1", "g1.com.br");
-// proxy.register("localhost:800/puc", "http://localhost:9000/home");
-// // proxy.register("localhost:9000", "localhost");
-//
 
-var app = express();
+let app = express();
 
 let MongoClient = require('mongodb').MongoClient;
 
 MongoClient.connect(MONGO_URL, function(err, connection) {
   global._connection = connection;
-  console.log(err);
+  if(err){
+    console.log(err);
+  }
   console.log('Connection is alive.');
 });
 
-// var db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
-// db.once('open', function (){
-//   console.log('connection opened');
-// });
-// app.use(helmet());
-//
-
 app.use(
   session({
-    secret: config.SESSION_SECRET,
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    secret: 'erpmanager',
     saveUninitialized: false,
     resave: true
   })
 );
+
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -61,6 +48,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+
+
+// var ps = require('ps-node');
+
 // app.use(function(req, res, next) {
 //   // if (req.session.user || req.url === "/home") {
 //   //   next();
@@ -72,7 +63,7 @@ app.use(express.static(path.join(__dirname, "public")));
 router(app);
 
 
-// catch 404 and forward to error handler
+// catch 404 and forward t  o error handler
 app.use(function(req, res, next) {
   var err = new Error("Not Found");
   err.status = 404;
@@ -90,7 +81,7 @@ app.use(function(err, req, res, next) {
   res.render("error");
 });
 
-app.listen(process.env.PORT || 8080);
+app.listen(8181);
 
 console.log('ERP Manager online.');
 

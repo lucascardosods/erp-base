@@ -12,7 +12,7 @@ clientRouter = function(router) {
 
   router.post("/client/new", async function (req, res) {
     try {
-      ClientController.postNewClient(req, res, function(e){
+      ClientController.postNewClient(req, res, function(client){
         req.body.message = {"success" : "Sucesso na criação"};
         ClientController.listPage(req, res);
       });

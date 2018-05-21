@@ -1,5 +1,5 @@
 loginRouter = function(router) {
-  const authServices = require("../auth/authServices.js")();
+  const authServices = require("../services/auth-services.js")();
   /* GET home page. */
   router.get("/login", function(req, res, next) {
     if (req.session.user) {

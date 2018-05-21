@@ -6,23 +6,21 @@ let mongoose = require('mongoose');
 var upload = multer({ dest: 'uploads/' });
 
 async function bindPostNewClient(body) {
-  if(body.name.length < 4 || body.port.length === 0 || body.systemName.length < 4){
-    throw new Error("parameters");
-  } else {
-    let ar = [];
-    for (let key in body){
-      if(body[key].indexOf("erp-module") !== -1){
-        ar.push(body[key])
-      }
+  console.log(body);
+  let ar = [];
+  for (let key in body){
+    if(body[key].indexOf("erp-module") !== -1){
+      ar.push(body[key])
     }
-    let modules = await ModuleServices.findAllModules({'folderName' : {'$in' : ar}});
-    let client = new mongoose.models.Client();
-    client.modules = modules;
-    client.name = body.name;
-    client.systemName = body.systemName;
-    client.port = body.port;
-    return {"client" : client, "modules" : modules};
   }
+  let modules = await ModuleServices.findAllModules({'folderName' : {'$in' : ar}});
+  let client = new mongoose.models.Client();
+  client.modules = modules;
+  client.password =  body.systemName;
+  client.name = body.name;
+  client.systemName = body.systemName;
+  client.port = body.port;
+  return {"client" : client, "modules" : modules};
 
 }
 
@@ -50,11 +48,11 @@ ClientController = {
   },
 
   activateCient : async function(req, res) {
-      ClientServices.activateCientBySystemFolder(req.params.systemFolder, function(er){
-        if(er){
-          throw new Error(er);
-        }
-      });
+    ClientServices.activateCientBySystemFolder(req.params.systemFolder, function(er){
+      if(er){
+        throw new Error(er);
+      }
+    });
   },
 
   deactivateCient : async function(req, res) {
@@ -68,6 +66,7 @@ ClientController = {
   },
 
   postNewClient : async function(req, res, callback) {
+
     // var upload = multer().array('loginImage','smallImage');
     //   upload(req, res, async function (err) {
     //     if (err) {
@@ -75,8 +74,9 @@ ClientController = {
     //       // An error occurred when uploading
     //     }
     //     else {
-    let modsForGit = "";
     console.log(req.body);
+    // return
+    let modsForGit = "";
     if(req.body["erp-module-clients"]){
       modsForGit += "*clients*";
     }
@@ -96,18 +96,21 @@ ClientController = {
     }
     let response = await ClientServices.createClient(client);
     if(!response){
+      // Contract async
+      ClientServices.registerClientContract(req.body, client._id);
+      // Change menu layout
       try{
         let menu = "";
 
         modules.forEach(function(module){
           menu += module.menuData;
         });
-
-        ClientServices.createSystemFolder(req.body.systemName,req.body.port, modsForGit, menu, function(er){
+        // Start creation system
+        ClientServices.createSystemFolder(client, modsForGit, menu, function(er){
           if(er){
             throw new Error("folder_creation");
           }else {
-            callback()
+            callback(client)
           }
         });
 

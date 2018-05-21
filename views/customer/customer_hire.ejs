@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<script type="text/javascript" src="/javascripts/jquery-3.2.1.min.js"></script>
+</head>
+<% include customer_mid_base.ejs %>
+
+<!-- The Best Of People -->
+<section class="app_table">
+	<div class="container">
+		<div class="heading">
+			<div class="head_bar"></div>
+			<h2>Contrate agora!</h2>
+			<p>Pague apenas quando utilizar.</p>
+		</div>
+		<form method="POST"  action="/customer/new">
+			<br>
+			<div class="form-field">
+				<input type="text" name="name" value="" placeholder="Nome" />
+			</div>
+			<br>
+			Imagem de login
+			<input type="file" name="loginImage" accept="image/*">
+			<br>
+			Imagem topo
+			<input type="file" name="smallImage" accept="image/*">
+
+			<br>
+			<h2> Módulos: </h2>
+			<% if(modules) { %>
+			<% modules.forEach(function (module){ %>
+			<input type="checkbox" name="<%= module.folderName %>" value="<%= module.folderName %>"> <%= module.name %><br>
+			<% }) %>
+			<% } %>
+			<br>
+			<h2> Modelo de Cobrança</h2>
+			<input type="radio" id="requests" name="charge" value="requests"> Requisições <br>
+			<input type="radio" id="time" name="charge" value="time"> Tempo <br>
+			<br>
+			<div id='div1' style='display:none'>
+				<h4> Sobre a cobrança por tempo: </h4>
+
+				<input type="radio" name="timetype" value="automatic"> Automático <br>
+				<p>O sistema é desativado automáticamente depois de determinado tempo sem uso.</p>
+				<br>
+				<input type="radio" name="timetype" value="manual"> Manual <br>
+				<p>O sistema é desativado manualmente pelo paínel.</p>
+
+			</div>
+
+			<br>
+			<div class="form-buttons">
+				<button type="submit" class="button">Cadastrar</button>
+			</div>
+
+		</form>
+
+	</div>
+	</div>
+</section>
+<!-- End The Best Of People -->
+
+<!-- Footer -->
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="logo">
+				<img src="/img/logo.png" alt="image">
+			</div>
+			<div class="footer_text">
+				<div class="col-xs-6 col-sm-6 col-md-6 p_0">
+					<div class="copyright">
+					</div>
+				</div>
+				<div class="col-xs-6 col-sm-6 col-md-6 p_0">
+					<ul class="social_icons">
+						<li><a href=""><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+						<li><a href=""><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+						<li><a href=""><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+						<li><a href=""><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<!-- End Footer -->
+
+
+</body>
+
+<script>
+  $(document).ready(function() {
+    $('input[id="time"]').click(function() {
+        $('#div1').show();
+    });
+    $('input[id="requests"]').click(function() {
+        $('#div1').hide();
+    });
+
+  });
+</script>
