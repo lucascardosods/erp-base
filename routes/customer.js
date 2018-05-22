@@ -45,6 +45,30 @@ customerRouter = function(router) {
     CustomerController.loadDashboard(req, res);
   });
 
+  router.get("/customer/deactivate/:systemFolder", function (req, res) {
+    try {
+      CustomerController.deactivateSystem(req, res)
+    } catch(e){
+      req.body.message = {"error" : "Falha na desativação."};
+      return CustomerController.loadDashboard(req, res);
+    }
+    req.body.message = {"success" : "Usuário desativado com sucesso."};
+    return CustomerController.loadDashboard(req, res);
+  });
+
+
+  router.get("/customer/activate/:systemFolder", function (req, res) {
+    try {
+      CustomerController.activateCient(req, res)
+    } catch(e){
+      req.body.message = {"error" : "Falha na ativação."};
+      return CustomerController.loadDashboard(req, res);
+    }
+    req.body.message = {"success" : "Usuário ativado com sucesso."};
+    return CustomerController.loadDashboard(req, res);
+  });
+
+
 };
 
 module.exports = customerRouter;

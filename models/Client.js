@@ -11,9 +11,7 @@ let Client = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Module'
   }],
-  creationDate: {type: Date, Default: new Date() },
-
-
+  creationDate: {type: Date },
 });
 
 module.exports = mongoose.model('Client', Client);

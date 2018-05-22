@@ -6,6 +6,18 @@
 h1, h2, h3, h4, h5, h6 {
     margin: 0;
 }
+
+a:link {
+    color: #4f78b8;
+    text-decoration: none;
+
+
+}
+a:visited {
+    text-decoration: none;
+    color: #4f78b8;
+
+}
 .container {
     alignment: top;
     max-width: 700px;
@@ -22,7 +34,7 @@ h1, h2, h3, h4, h5, h6 {
 .table-header {
     display: flex;
     width: 100%;
-    background: #000;
+    background: #a0aac7;
     padding: 18px 0;
 }
 .table-row {
@@ -41,7 +53,7 @@ h1, h2, h3, h4, h5, h6 {
     text-transform: uppercase;
 }
 .filter__link {
-    color: white;
+    color: #8f8f8f;
     text-decoration: none;
     position: relative;
     display: inline-block;
@@ -52,7 +64,7 @@ h1, h2, h3, h4, h5, h6 {
     content: '';
     position: absolute;
     right: -18px;
-    color: white;
+    color: #8f8f8f;
     font-size: 12px;
     top: 50%;
     transform: translateY(-50%);

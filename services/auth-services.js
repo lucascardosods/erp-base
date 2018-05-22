@@ -9,7 +9,7 @@ module.exports = function () {
     checkCredentials : async function(username, userPass){
       console.log("check credentiasls");
       const user = await userDAO.connection().findOne({username: username});
-        console.log(user);
+        // console.log(user);
         if(user){
           if(userPass === user.password){
             console.log('correct password.');

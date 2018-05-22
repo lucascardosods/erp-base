@@ -10,6 +10,10 @@ let Contract = mongoose.Schema({
     ref: 'Client'
   },
   creationDate: {type: Date, Default: new Date() },
+  modules: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Module'
+  }],
 });
 
 module.exports = mongoose.model('Contract', Contract);

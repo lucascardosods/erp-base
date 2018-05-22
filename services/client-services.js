@@ -18,6 +18,20 @@ module.exports = function () {
       }
     },
 
+    find: async function (condition) {
+      try {
+        let res = await clientDAO.connection().find(condition, {'password': 0}).toArray();
+        console.log(res);
+        if(res.length === 1){
+          return res[0];
+        } else {
+          return res
+        }
+      } catch(er){
+        return (new Error('connection-error'));
+      }
+    },
+
     createClient: async function (client) {
       try {
         clientDAO.connection().insert(client, function (res) {
@@ -26,27 +40,6 @@ module.exports = function () {
       } catch(er){
         return er;
       }
-    },
-
-    registerClientContract: function (body, clientId) {
-      let contract = new mongoose.models.Contract();
-      contract.client = mongoose.Types.ObjectId(clientId);
-      if(body.charge === 'time'){
-        if(body.timetype === 'automatic'){
-          contract.pricePerRequest = "0.03";
-          contract.type = types.Contract.TIME_AUTOMATIC;
-        } else if(body.timetype === 'manual') {
-          contract.pricePerRequest = "0.02";
-          contract.type = types.Contract.TIME_MANUAL;
-
-        }
-      } else if(body.charge === 'request'){
-        contract.pricePerRequest = "0.01";
-        contract.type = types.Contract.REQUEST._id;
-      }
-      console.log(contract);
-      contractDAO.connection().insert(contract)
-
     },
 
 

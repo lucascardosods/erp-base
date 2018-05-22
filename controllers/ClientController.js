@@ -1,5 +1,6 @@
 const ModuleServices = require("../services/module-services.js")();
 const ClientServices = require("../services/client-services.js")();
+const AccountabilityServices = require("../services/accoutability-services.js")();
 var multer  = require('multer');
 let mongoose = require('mongoose');
 
@@ -20,13 +21,30 @@ async function bindPostNewClient(body) {
   client.name = body.name;
   client.systemName = body.systemName;
   client.port = body.port;
+  client.creationDate = new Date();
   return {"client" : client, "modules" : modules};
-
 }
 
+function parseModulesString(body){
+  let modsForGit = "";
+  if(body["erp-module-clients"]){
+    modsForGit += "*clients*";
+  }
+  if(body["erp-module-financial"]){
+    modsForGit += "*financial*";
+  }
+  return modsForGit;
+}
+
+function parseModulesMenu(modules){
+  let menu = "";
+  modules.forEach(function(module){
+    menu += module.menuData;
+  });
+  return menu;
+}
 
 ClientController = {
-
 
   listPage : async function(req, res) {
     let clients = await ClientServices.listClients();
@@ -66,7 +84,6 @@ ClientController = {
   },
 
   postNewClient : async function(req, res, callback) {
-
     // var upload = multer().array('loginImage','smallImage');
     //   upload(req, res, async function (err) {
     //     if (err) {
@@ -74,19 +91,9 @@ ClientController = {
     //       // An error occurred when uploading
     //     }
     //     else {
-    console.log(req.body);
-    // return
-    let modsForGit = "";
-    if(req.body["erp-module-clients"]){
-      modsForGit += "*clients*";
-    }
-    if(req.body["erp-module-financial"]){
-      modsForGit += "*financial*";
-    }
-    console.log('mod');
-    console.log(modsForGit);
     let client;
     let modules;
+    let modsForGit = parseModulesString(req.body);
     try {
       let response = await bindPostNewClient(req.body);
       client = response["client"];
@@ -94,17 +101,14 @@ ClientController = {
     } catch(er){
       throw new Error("parameters");
     }
+    // Create Client in DB
     let response = await ClientServices.createClient(client);
     if(!response){
       // Contract async
-      ClientServices.registerClientContract(req.body, client._id);
-      // Change menu layout
+      AccountabilityServices.registerClientContract(req.body, modules, client._id);
       try{
-        let menu = "";
-
-        modules.forEach(function(module){
-          menu += module.menuData;
-        });
+        // Change menu layout
+        let menu = parseModulesMenu(modules);
         // Start creation system
         ClientServices.createSystemFolder(client, modsForGit, menu, function(er){
           if(er){
@@ -113,16 +117,12 @@ ClientController = {
             callback(client)
           }
         });
-
       } catch(e){
         throw new Error("parameters");
-
       }
     } else {
       throw new Error("user_creation");
     }
-
-
   }
 
 };

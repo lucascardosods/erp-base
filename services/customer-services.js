@@ -1,15 +1,15 @@
 module.exports = function () {
 
-  const moduleDAO = require('../DAO/ModuleDAO');
   const clientDAO = require('../DAO/ClientDAO');
+  const exec = require('child_process').exec;
 
   return {
 
 
     checkCredentials: async function (systemName, password) {
-      const client = await clientDAO.connection().findOne({"systemName" : systemName});
-      if(client){
-        if(password === client.password){
+      const client = await clientDAO.connection().findOne({"systemName": systemName});
+      if (client) {
+        if (password === client.password) {
           console.log('correct password.');
           return client
         }
@@ -21,7 +21,22 @@ module.exports = function () {
       }
     },
 
+    isRunning: function (client, callback) {
+      exec('lsof -t -i:' + client.port, {detached: true},
+        (error, stdout, stderr) => {
+          if (stdout) {
+            return callback(true);
+          }
+          if (error !== null) {
+            return callback(false);
+          } else {
 
+            return callback(false);
+          }
+
+        });
+
+    }
   }
 
 };

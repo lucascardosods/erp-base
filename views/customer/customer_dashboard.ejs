@@ -4,13 +4,34 @@
 
 <% include customer_mid_base.ejs %>
 
-
 <!-- The Best Of People -->
 <section class="app_table">
 	<div class="container">
-
+		<h1>Olá, <%= client.name %> </h1>
+		<h7> <b>Status:</b> <%- running ? 'Online' : 'Offline'%></h7>
+		<% if(running){ %>
+		<button type="submit" class="button"><a href="/customer/deactivate/<%= client.systemName %>">Desativar sistema.</a></button>
+		<%} else { %>
+		<button type="submit" class="button"><a href="/customer/activate/<%= client.systemName %>">Ativar sistema.</a></button>
+		<% } %>
+		<br><br>
+		_______________________________________
+		<h4> <b>Módulos ativos:</b></h4>
+		<% modules.forEach(function (module){ %>
+		<h4> <%= module.name %></h4>
+		<% }); %>
+		<br>
+		_______________________________________
+		<h4> <b>Tipo de Contratação de Pagamento: </b> <br>
+			<%= types.Contract.findById(contract.type).name%> </h4>
+		<br><br>
+		<h4> <b>Valor devedor: </b> R$ <%= accountability.total %> </h4>
+		<% if(accountability.numberOfRequests) { %>
+		<h4> <b>Total de requisições: </b> <%= accountability.numberOfRequests %> </h4>
+		<% } %>
 
 	</div>
+
 	</div>
 </section>
 <!-- End The Best Of People -->
