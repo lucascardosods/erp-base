@@ -6,6 +6,8 @@ module.exports = function () {
   const types = require("../helpers/types.js");
   let mongoose = require("mongoose");
 
+  const PRICE_PER_MINUTE = 0.002166666667;
+  
   function millisToMinutesAndSeconds(millis) {
     // var seconds = ((millis % 60000) / 1000).toFixed(0);
     return Math.floor(millis / 60000);
@@ -19,11 +21,11 @@ module.exports = function () {
           return await this.calculateByRequests(contract);
         case types.Contract.TIME_MANUAL._id:
           console.log('time_manual');
-          return await this.calculateByTime(contract, 0.002166666667);
+          return await this.calculateByTime(contract, PRICE_PER_MINUTE);
         // return await this.calculateByRequests(contract);
         case types.Contract.TIME_AUTOMATIC._id:
           console.log('time_automatic');
-          return await this.calculateByTime(contract, 0.002166666667);
+          return await this.calculateByTime(contract, 2 * PRICE_PER_MINUTE);
 
 
           break;
