@@ -58,15 +58,16 @@ CustomerController = {
 
   loadDashboard : async function(req, res) {
     let contract = await AccountabilityServices.findContractByUserId(req.session.user);
+    console.log(contract);
     let accountability = await AccountabilityServices.checkAccountability(contract);
     let client = await ClientServices.find({_id: mongoose.Types.ObjectId(req.session.user)});
     let modules = await ModuleServices.findAllModules({'_id' : {'$in' : client.modules}});
     CustomerServices.isRunning(client, function(running){
       console.log('===========LOAD DASHBOARD');
-      console.log(contract);
-      console.log(client);
+      // console.log(contract);
+      // console.log(client);
       console.log(accountability);
-      console.log(modules);
+      // console.log(modules);
       console.log('is Running: '+running);
       console.log('===========END LOAD DASHBOARD');
       return res.render(view+'/customer_dashboard.ejs', {

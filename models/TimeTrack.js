@@ -13,6 +13,8 @@ let TimeTrack = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Module'
   }],
+  paid: {type: Boolean, default: false },
+
 
 });
 

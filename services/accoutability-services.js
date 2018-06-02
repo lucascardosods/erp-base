@@ -1,25 +1,29 @@
 module.exports = function () {
 
   const contractDAO = require('../DAO/contractDAO');
+  const timetrackDAO = require('../DAO/TimeTrackDAO');
   const requestDAO = require('../DAO/requestDAO');
   const types = require("../helpers/types.js");
   let mongoose = require("mongoose");
 
+  function millisToMinutesAndSeconds(millis) {
+    // var seconds = ((millis % 60000) / 1000).toFixed(0);
+    return Math.floor(millis / 60000);
+  }
   return {
 
-
-     checkAccountability: async function (contract) {
+    checkAccountability: async function (contract) {
       switch (contract.type) {
         case types.Contract.REQUEST._id:
           console.log('request');
           return await this.calculateByRequests(contract);
         case types.Contract.TIME_MANUAL._id:
           console.log('time_manual');
-          // return await this.calculateByTimeManual(contract);
-          return await this.calculateByRequests(contract);
+          return await this.calculateByTime(contract, 0.002166666667);
+        // return await this.calculateByRequests(contract);
         case types.Contract.TIME_AUTOMATIC._id:
           console.log('time_automatic');
-          return await this.calculateByTimeAutomatic(contract);
+          return await this.calculateByTime(contract, 0.002166666667);
 
 
           break;
@@ -45,12 +49,29 @@ module.exports = function () {
       }
     },
 
-    calculateByTimeManual: async function(contract){
-
-    },
-
-    calculateByTimeAutomatic: async function(contract){
-
+    calculateByTime: async function(contract, pricePerMinute){
+      let tracks = await timetrackDAO.connection().find({client : contract.client, paid: false}).toArray();
+      let totalMinutes = 0;
+      let totalPrice = 0;
+      tracks.forEach(function(track){
+        if(!track.stopped){
+          track.stopped = new Date()
+        }
+        let time = track.stopped - track.started;
+        time = millisToMinutesAndSeconds(time);
+        track._minutes = time;
+        totalMinutes += time;
+        track._price = pricePerMinute * time;
+        totalPrice += track._price;
+      });
+      totalPrice = totalPrice.toFixed(2);
+      // console.log(totalMinutes);
+      // console.log(totalPrice);
+      return {
+        tracks: tracks,
+        total : totalPrice,
+        totalMinutes: totalMinutes
+      }
     },
 
     registerClientContract: function (body, modules, clientId) {
