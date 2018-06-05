@@ -5,6 +5,8 @@ let mongoose = require("mongoose");
 const view = 'customer';
 const ClientController = require('../controllers/ClientController.js');
 const ClientServices = require("../services/client-services.js")();
+const GatewayServices = require("../services/gateway-services.js")();
+
 const types = require("../helpers/types.js");
 
 
@@ -98,6 +100,66 @@ CustomerController = {
       }
     });
   },
+
+
+  checkCustomerIsRunning : async function(systemName, callback){
+    try {
+      let client = await ClientServices.find({systemName: systemName});
+      if(!client) {
+        console.log('!client');
+        callback(false)
+      } else {
+        console.log(client);
+        CustomerServices.isRunning(client, function (running) {
+          console.log(' response is checked');
+          console.log(running);
+          callback(true)
+        })
+      }
+
+    } catch(e){
+    }
+
+
+
+  },
+
+  checkShouldActivateClient : async function(req, res){
+    let systemName = req.params.systemFolder;
+    try {
+      let client = await ClientServices.find({systemName: systemName});
+      let contract = await AccountabilityServices.findContractByUserId(client._id);
+      if(!contract){
+        res.redirect('http://erp.localhost:8181/login');
+      }
+      if(contract.type === types.Contract.TIME_AUTOMATIC._id){
+        // ACTIVATE CLIENT
+        ClientServices.activateCientBySystemFolder(systemName, function(resposta){
+          if(resposta){
+            throw new Error("no.contract");
+          } else {
+            // REGISTERING ON GATEWAY
+            GatewayServices.register(systemName, client.port, function(gatewayResponse){
+              console.log(gatewayResponse.body);
+              var waitTill = new Date(new Date().getTime() + 5 * 1000);
+              while(waitTill > new Date()){}
+              res.redirect('http://'+systemName+".localhost:8080");
+
+            });
+          }
+        })
+      } else {
+        console.log('no time automatic');
+        res.redirect('http://erp.localhost:8181/login');
+      }
+    } catch(e){
+
+    }
+
+
+
+  }
+
 
 };
 

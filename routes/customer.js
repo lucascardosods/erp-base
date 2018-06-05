@@ -68,6 +68,25 @@ customerRouter = function(router) {
     return CustomerController.loadDashboard(req, res);
   });
 
+  router.get("/customer/isrunning/:systemFolder", function (req, res) {
+    CustomerController.checkCustomerIsRunning(req.params.systemFolder, function(isRunning){
+      console.log('route response:');
+      console.log(isRunning);
+      var waitTill = new Date(new Date().getTime() + 5 * 1000);
+      while(waitTill > new Date()){}
+      return res.send({response : isRunning});
+    });
+  });
+
+  router.get("/customer/check/:systemFolder", function (req, res) {
+    return res.redirect("http://localhost:8181/customer/check2/"+req.params.systemFolder)
+  });
+
+  router.get("/customer/check2/:systemFolder", function (req, res) {
+    CustomerController.checkShouldActivateClient(req, res);
+    })
+
+
 
 };
 

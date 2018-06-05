@@ -5,7 +5,6 @@ module.exports = function () {
   const contractDAO = require('../DAO/contractDAO');
   const exec = require('child_process').exec;
   const mongoose = require('mongoose');
-  const types = require("../helpers/types.js");
 
   return {
 
@@ -21,7 +20,6 @@ module.exports = function () {
     find: async function (condition) {
       try {
         let res = await clientDAO.connection().find(condition, {'password': 0}).toArray();
-        console.log(res);
         if(res.length === 1){
           return res[0];
         } else {

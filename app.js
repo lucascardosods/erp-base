@@ -51,8 +51,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 // var ps = require('ps-node');
-
+//
 // app.use(function(req, res, next) {
+//
+//   next()
 //   // if (req.session.user || req.url === "/home") {
 //   //   next();
 //   // } else {
