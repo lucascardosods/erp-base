@@ -1,13 +1,15 @@
 customerRouter = function(router) {
   const CustomerController = require('../controllers/CustomerController.js');
 
+
   router.get("/customer/hire", function (req, res) {
     CustomerController.hirePage(req,res);
   });
 
   router.post("/customer/new", function (req, res) {
+    console.log(req.files);
     try {
-      CustomerController.newCustomer(req, function(client){
+      CustomerController. newCustomer(req, function(client){
         if(client) {
           console.log(client);
           res.render('customer/customer_welcome.ejs', {

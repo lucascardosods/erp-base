@@ -3,7 +3,8 @@ homeRouter = function(router) {
 
   router.get("/home", function (req, res, next) {
     res.render('home', {
-      message: null
+      message: null,
+      title: 'Home'
     });
   });
 

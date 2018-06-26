@@ -26,6 +26,7 @@ CustomerController = {
   },
 
   newCustomer : function(req, callback) {
+    console.log(req.files);
     try {
       req.body.systemName = req.body.name.replace(/\s/g, '');
       req.body.port = randomIntFromInterval(9000, 9999).toString();
@@ -150,7 +151,7 @@ CustomerController = {
         })
       } else {
         console.log('no time automatic');
-        res.redirect('http://erp.localhost:8181/login');
+        res.redirect('http://erp.localhost:8181/customer/login');
       }
     } catch(e){
 

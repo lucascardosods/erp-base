@@ -42,7 +42,7 @@ buttons {
   left: -200px;
   overflow: auto;
   z-index: 2;
-  background-color: #3A6181;
+  background-color: #8f8f8f;
   transition: transform 0.2s;
 }
 

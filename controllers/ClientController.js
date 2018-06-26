@@ -1,13 +1,11 @@
 const ModuleServices = require("../services/module-services.js")();
 const ClientServices = require("../services/client-services.js")();
 const AccountabilityServices = require("../services/accoutability-services.js")();
-var multer  = require('multer');
+
 let mongoose = require('mongoose');
 
-var upload = multer({ dest: 'uploads/' });
 
 async function bindPostNewClient(body) {
-  console.log(body);
   let ar = [];
   for (let key in body){
     if(body[key].indexOf("erp-module") !== -1){
@@ -44,6 +42,14 @@ function parseModulesMenu(modules){
   return menu;
 }
 
+function parseImages(files){
+  let dic = {};
+  files.forEach(function(n){
+    dic[n.fieldname] = n.filename;
+  });
+  return dic
+}
+
 ClientController = {
 
   listPage : async function(req, res) {
@@ -51,9 +57,8 @@ ClientController = {
     res.render('client/list.ejs', {
       message: req.body.message,
       clients: clients,
-      title: "Clientes Cadastrados"
+      title: "Lista de clientes"
     });
-
   },
 
   newPage : async function(req, res) {
@@ -76,24 +81,19 @@ ClientController = {
   deactivateCient : async function(req, res) {
     try {
       ClientServices.stopCientBySystemFolder(req.params.systemFolder, function(er){
-
       });
     } catch(e){
       throw new Error("deactivate");
     }
   },
 
+
+
   postNewClient : async function(req, res, callback) {
-    // var upload = multer().array('loginImage','smallImage');
-    //   upload(req, res, async function (err) {
-    //     if (err) {
-    //       console.log(err);
-    //       // An error occurred when uploading
-    //     }
-    //     else {
     let client;
     let modules;
     let modsForGit = parseModulesString(req.body);
+    let dicWithImagesUploaded = parseImages(req.files);
     try {
       let response = await bindPostNewClient(req.body);
       client = response["client"];
@@ -110,7 +110,7 @@ ClientController = {
         // Change menu layout
         let menu = parseModulesMenu(modules);
         // Start creation system
-        ClientServices.createSystemFolder(client, modsForGit, menu, function(er){
+        ClientServices.createSystemFolder(dicWithImagesUploaded, client, modsForGit, menu, function(er){
           if(er){
             throw new Error("folder_creation");
           }else {

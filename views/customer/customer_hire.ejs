@@ -13,17 +13,17 @@
 			<h2>Contrate agora!</h2>
 			<p>Pague apenas quando utilizar.</p>
 		</div>
-		<form method="POST"  action="/customer/new">
+
+		<form method="post" enctype="multipart/form-data" action="/customer/new">
+
 			<br>
-			<div class="form-field">
-				<input type="text" name="name" value="" placeholder="Nome" />
-			</div>
-			<br>
+			<input type="text" name="name" value="" placeholder="Nome" />
+			<br><br>
 			Imagem de login
-			<input type="file" name="loginImage" accept="image/*">
+			<input type="file" name="login_image" accept="image/*">
 			<br>
 			Imagem topo
-			<input type="file" name="smallImage" accept="image/*">
+			<input type="file" name="small_image" accept="image/*">
 
 			<br>
 			<h2> Módulos: </h2>
@@ -49,9 +49,7 @@
 			</div>
 
 			<br>
-			<div class="form-buttons">
-				<button type="submit" class="button">Cadastrar</button>
-			</div>
+			<button type="submit" class="button">Cadastrar</button>
 
 		</form>
 
@@ -92,10 +90,10 @@
 <script>
   $(document).ready(function() {
     $('input[id="time"]').click(function() {
-        $('#div1').show();
+      $('#div1').show();
     });
     $('input[id="requests"]').click(function() {
-        $('#div1').hide();
+      $('#div1').hide();
     });
 
   });

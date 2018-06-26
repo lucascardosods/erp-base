@@ -34,7 +34,7 @@
 		<% } %>
 
 		<!-- END CONTRATO POR REQUEST -->
-		<% if (contract.type ==types.Contract.TIME_MANUAL._id){ %>
+		<% if (contract.type ==types.Contract.TIME_MANUAL._id || contract.type == types.Contract.TIME_AUTOMATIC._id){%>
 		<h4> <b>Valor devedor: </b> R$ <%= accountability.total %> </h4>
 		<h4> <b>Total de tempo ativo: </b> <%- accountability.totalMinutes %> minutos </h4>
 		<br>

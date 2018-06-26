@@ -41,9 +41,10 @@ module.exports = function () {
     },
 
 
-    createSystemFolder: function (client, mod, menu, callback) {
+    createSystemFolder: function (images, client, mod, menu, callback) {
       console.log('Start creating system folder');
-      var yourscript = exec('sh scripts/new_client.sh '+client.systemName+' '+client.port+ ' '+mod+' '+client._id, { detached: true},
+      console.log(images);
+      var yourscript = exec('sh scripts/new_client.sh '+client.systemName+' '+client.port+ ' '+mod+' '+client._id+' '+images["small_image"]+' '+images["login_image"], { detached: true},
         (error, stdout, stderr) => {
           console.log(stdout);
           console.log('Creating system 2....');
@@ -123,6 +124,7 @@ module.exports = function () {
     },
 
     stopCientBySystemFolder: function(systemName, callback){
+      console.log("deactivating: "+systemName);
       let script = exec('sh scripts/stop.sh '+systemName, { detached: true},
         (error, stdout, stderr) => {
           console.log(stderr);

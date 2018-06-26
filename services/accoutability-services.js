@@ -64,8 +64,10 @@ module.exports = function () {
         totalPrice += track._price;
       });
       totalPrice = totalPrice.toFixed(2);
-      // console.log(totalMinutes);
-      // console.log(totalPrice);
+      console.log(totalMinutes);
+      console.log(totalPrice);
+      console.log(tracks);
+
       return {
         tracks: tracks,
         total : totalPrice,

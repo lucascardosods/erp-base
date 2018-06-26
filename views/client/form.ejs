@@ -4,7 +4,7 @@
     <div class="mui--appbar-height"></div>
     <div class="mui-container-fluid">
 
-        <form method="POST"  action="/client/new">
+        <form method="POST"  enctype="multipart/form-data" action="/client/new">
             <br>
             <div class="form-field">
                 <input type="text" name="name" value="" placeholder="Nome do sistema" />
@@ -19,9 +19,11 @@
             </div>
             <br>
 
-            <input type="file" name="loginImage" accept="image/*"> | Imagem de login
+            Imagem de login
+            <input type="file" name="login_image" accept="image/*">
             <br><br>
-            <input type="file" name="smallImage" accept="image/*"> | Imagem topo fixa
+            Imagem topo
+            <input type="file" name="small_image" accept="image/*">
 
             <br>
             <h2> Módulos ativos: </h2>
@@ -31,6 +33,22 @@
                      <input type="checkbox" name="<%= module.folderName %>" value="<%= module.folderName %>"> <%= module.name %><br>
               <% }) %>
             <% } %>
+
+            <h2> Modelo de Cobrança</h2>
+            <input type="radio" id="requests" name="charge" value="requests"> Requisições <br>
+            <input type="radio" id="time" name="charge" value="time"> Tempo <br>
+            <br>
+            <div id='div1' style='display:none'>
+                <h4> Sobre a cobrança por tempo: </h4>
+
+                <input type="radio" name="timetype" value="automatic"> Automático <br>
+                <p>O sistema é desativado automáticamente depois de determinado tempo sem uso.</p>
+                <br>
+                <input type="radio" name="timetype" value="manual"> Manual <br>
+                <p>O sistema é desativado manualmente pelo paínel.</p>
+
+            </div>
+
             <br>
             <div class="form-buttons">
                 <button type="submit" class="button">Pronto</button>
@@ -44,3 +62,15 @@
 
 </body>
 </html>
+
+<script>
+  $(document).ready(function() {
+    $('input[id="time"]').click(function() {
+      $('#div1').show();
+    });
+    $('input[id="requests"]').click(function() {
+      $('#div1').hide();
+    });
+
+  });
+</script>
