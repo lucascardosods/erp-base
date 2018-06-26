@@ -5,6 +5,7 @@ module.exports = function () {
   const contractDAO = require('../DAO/contractDAO');
   const exec = require('child_process').exec;
   const mongoose = require('mongoose');
+  const GatewayServices = require("../services/gateway-services.js")();
 
   return {
 
@@ -69,6 +70,11 @@ module.exports = function () {
       try {
         console.log(systemName);
         let user = await clientDAO.connection().findOne({'systemName': systemName});
+        console.log('register activation');
+        GatewayServices.register(systemName, user.port, function(gatewayResponse){
+          console.log('gateway response:');
+          console.log(gatewayResponse.body);
+        });
         console.log(user);
         let track = new mongoose.models.TimeTrack();
         track.modules = user.modules;
@@ -90,6 +96,9 @@ module.exports = function () {
     registerClientDeactivation : async function(systemName, callback){
       try {
         let user = await clientDAO.connection().findOne({'systemName': systemName});
+        GatewayServices.unregister(systemName, user.port, function(gatewayResponse){
+          console.log(gatewayResponse.body);
+        });
         if(!user){
           callback(new Error('registerClientDeactivation.fail'))
         }
