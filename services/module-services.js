@@ -1,6 +1,6 @@
 module.exports = function () {
 
-  const moduleDAO = require('../DAO/ModuleDAO');
+  const moduleDAO = require('../DAO/moduleDAO');
 
   return {
 
