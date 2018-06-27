@@ -1,6 +1,6 @@
 module.exports = function () {
 
-  const clientDAO = require('../DAO/ClientDAO');
+  const clientDAO = require('../DAO/clientDAO');
   const exec = require('child_process').exec;
 
   return {

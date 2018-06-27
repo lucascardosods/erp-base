@@ -1,7 +1,7 @@
 module.exports = function () {
 
-  const clientDAO = require('../DAO/ClientDAO');
-  const trackTimeDAO = require('../DAO/TimeTrackDAO');
+  const clientDAO = require('../DAO/clientDAO');
+  const trackTimeDAO = require('../DAO/timeTrackDAO');
   const contractDAO = require('../DAO/contractDAO');
   const exec = require('child_process').exec;
   const mongoose = require('mongoose');

@@ -1,7 +1,7 @@
 module.exports = function () {
 
   const contractDAO = require('../DAO/contractDAO');
-  const timetrackDAO = require('../DAO/TimeTrackDAO');
+  const timetrackDAO = require('../DAO/timeTrackDAO');
   const requestDAO = require('../DAO/requestDAO');
   const types = require("../helpers/types.js");
   let mongoose = require("mongoose");
