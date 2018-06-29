@@ -52,8 +52,29 @@ app.use(multer({
 }).any());
 
 
-app.use(function(req, res, next) {
-  if (req.session.user || req.path === '/login') {
+const ClientServices = require("./services/client-services.js")();
+const CustomerServices = require("./services/customer-services.js")();
+
+const myip = "localhost";
+app.use(async function(req, res, next) {
+  if (req.path.indexOf("/c/") !== -1) {
+    let ar = req.path.split("/");
+    let clientName = ar[2];
+    console.log(clientName);
+    let client = await ClientServices.find({'systemName' : clientName });
+    CustomerServices.isRunning(client, function(r1){
+      console.log('check is running');
+      console.log(r1);
+      if(r1){
+        return res.redirect("http://"+myip+":"+client.port)
+      } else {
+        return res.redirect("/customer/hire");
+
+      }
+    })
+
+  }
+  else if (req.session.user || req.path === '/login' || req.path.indexOf("customer") !== -1) {
     return next();
   } else {
     return res.redirect("/login");
@@ -81,7 +102,7 @@ app.use(function(err, req, res, next) {
   res.render("error");
 });
 
-app.listen(8181);
+app.listen(80);
 
 console.log('ERP Manager online.');
 
