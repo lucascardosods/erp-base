@@ -63,17 +63,19 @@ app.use(async function(req, res, next) {
     console.log(clientName);
     let client = await ClientServices.find({'systemName' : clientName });
     console.log(client);
-    CustomerServices.isRunning(client, function(r1){
-      console.log('check is running');
-      console.log(r1);
+    CustomerServices.isRunning(client, async function(r1){
       if(r1){
         return res.redirect("http://"+myip+":"+client.port)
       } else {
-        return res.redirect("/customer/hire");
-
+        let response = await CustomerServices.activateClientIfContract(client);
+        if(response){
+          console.log('ACTIVATED');
+          return res.redirect("http://"+myip+":"+client.port)
+        } else {
+          return res.redirect("/customer/hire");
+        }
       }
     })
-
   }
   else if (req.session.user || req.path === '/login' || req.path.indexOf("customer") !== -1) {
     return next();

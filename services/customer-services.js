@@ -37,8 +37,24 @@ module.exports = function () {
           }
 
         });
+    },
 
-    }
+    activateClientIfContract : async function(client){
+      let contract = await AccountabilityServices.findContractByUserId(client._id);
+      if(!contract){
+        return false;
+      }
+      if(contract.type === types.Contract.TIME_AUTOMATIC._id){
+        ClientServices.activateCientBySystemFolder(client.systemName, function(resposta){
+          if(resposta){
+            throw new Error("no.contract");
+          } else {
+            // REGISTERING ON GATEWAY
+            return true;
+          }
+        })
+      }
+    },
   }
 
 };

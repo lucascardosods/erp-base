@@ -125,7 +125,12 @@ CustomerController = {
 
   },
 
-  checkShouldActivateClient : async function(req, res){
+
+
+
+
+
+    checkShouldActivateClient : async function(req, res){
     let systemName = req.params.systemFolder;
     try {
       let client = await ClientServices.find({systemName: systemName});
