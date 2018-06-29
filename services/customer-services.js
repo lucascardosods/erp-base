@@ -3,6 +3,7 @@ module.exports = function () {
   const clientDAO = require('../DAO/clientDAO');
   const exec = require('child_process').exec;
   const AccountabilityServices = require("../services/accoutability-services.js")();
+  const types = require("../helpers/types.js");
 
   return {
 

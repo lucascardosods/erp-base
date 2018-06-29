@@ -11,9 +11,9 @@ var1 = clients
 var2 = financial
 if [[ $3 == *"$var1"* ]]; then
     echo "Clients module - started clone"
-    sudo git clone https://github.com/lucascardosods/erp-module-clients.git
+    git clone https://github.com/lucascardosods/erp-module-clients.git
 fi
 if [[ $3 == *"$var2"* ]]; then
     echo "Financial module - started clone"
-    sudo git clone https://github.com/lucascardosods/erp-module-financial
+    git clone https://github.com/lucascardosods/erp-module-financial
 fi
