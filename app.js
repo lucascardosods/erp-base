@@ -55,7 +55,7 @@ app.use(multer({
 const ClientServices = require("./services/client-services.js")();
 const CustomerServices = require("./services/customer-services.js")();
 
-const myip = "localhost";
+const myip = "18.206.1.173";
 app.use(async function(req, res, next) {
   if (req.path.indexOf("/c/") !== -1) {
     let ar = req.path.split("/");
