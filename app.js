@@ -62,6 +62,7 @@ app.use(async function(req, res, next) {
     let clientName = ar[2];
     console.log(clientName);
     let client = await ClientServices.find({'systemName' : clientName });
+    console.log(client);
     CustomerServices.isRunning(client, function(r1){
       console.log('check is running');
       console.log(r1);
