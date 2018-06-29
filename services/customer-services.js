@@ -4,6 +4,7 @@ module.exports = function () {
   const exec = require('child_process').exec;
   const AccountabilityServices = require("../services/accoutability-services.js")();
   const types = require("../helpers/types.js");
+  const ClientServices = require("../services/client-services.js")();
 
   return {
 
