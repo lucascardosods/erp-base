@@ -69,10 +69,10 @@ app.use(async function(req, res, next) {
       } else {
         let response = await CustomerServices.activateClientIfContract(client);
         if(response){
+          return res.redirect("/customer/hire");
+        } else {
           console.log('ACTIVATED');
           return res.redirect("http://"+myip+":"+client.port)
-        } else {
-          return res.redirect("/customer/hire");
         }
       }
     })
