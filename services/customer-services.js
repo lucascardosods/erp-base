@@ -22,8 +22,10 @@ module.exports = function () {
     },
 
     isRunning: function (client, callback) {
+      console.log("lsof -t -i:' + client.port");
       exec('lsof -t -i:' + client.port, {detached: true},
         (error, stdout, stderr) => {
+          console.log(stdout);
           if (stdout) {
             return callback(true);
           }

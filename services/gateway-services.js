@@ -5,6 +5,7 @@ module.exports = function () {
 
     register: async function (systemFolder, port, callback) {
       const request = require('request');
+      return callback(true);
       let res = await request.post(
         "http://localhost:8080/activate/"+port+"/"+systemFolder
         );
@@ -13,6 +14,7 @@ module.exports = function () {
 
     unregister: async function (systemFolder, port, callback) {
       const request = require('request');
+      return callback(true);
       let res = await request.post(
         "http://localhost:8080/deactivate/"+port+"/"+systemFolder
       );
