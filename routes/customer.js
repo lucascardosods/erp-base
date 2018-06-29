@@ -54,6 +54,8 @@ customerRouter = function(router) {
       req.body.message = {"error" : "Falha na desativação."};
       return CustomerController.loadDashboard(req, res);
     }
+    var waitTill = new Date(new Date().getTime() + 5 * 1000);
+    while(waitTill > new Date()){}
     req.body.message = {"success" : "Usuário desativado com sucesso."};
     return CustomerController.loadDashboard(req, res);
   });
