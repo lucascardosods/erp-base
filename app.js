@@ -63,8 +63,11 @@ app.use(async function(req, res, next) {
     console.log(clientName);
     let client = await ClientServices.find({'systemName' : clientName });
     console.log(client);
+    if(!client){
+      return res.redirect("/customer/hire");
+    }
     CustomerServices.isRunning(client, async function(r1){
-      if(r1){
+      if(r1 === true){
         return res.redirect("http://"+myip+":"+client.port)
       } else {
         let response = await CustomerServices.activateClientIfContract(client);
@@ -72,6 +75,8 @@ app.use(async function(req, res, next) {
           return res.redirect("/customer/hire");
         } else {
           console.log('ACTIVATED');
+          var waitTill = new Date(new Date().getTime() + 5 * 1000);
+          while(waitTill > new Date()){}
           return res.redirect("http://"+myip+":"+client.port)
         }
       }
