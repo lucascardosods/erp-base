@@ -79,6 +79,7 @@ module.exports = function () {
         let track = new mongoose.models.TimeTrack();
         track.modules = user.modules;
         track.client = user._id;
+        track.started = new Date();
         console.log(track);
         trackTimeDAO.connection().insert(track,function(e){
           if(e){
