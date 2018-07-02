@@ -31,9 +31,7 @@
 		<!-- START CONTRATO POR REQUESTS -->
 		<% if (contract.type ==types.Contract.REQUEST._id){ %>
 		<h4> <b>Valor devedor: </b> R$ <%= accountability.total %> </h4>
-		<% if(accountability.numberOfRequests) { %>
-		<h4> <b>Total de requisições: </b> <%= accountability.numberOfRequests %> </h4>
-		<% } %>
+
 		<% } %>
 
 		<!-- END CONTRATO POR REQUEST -->

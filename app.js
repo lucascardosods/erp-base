@@ -60,10 +60,8 @@ app.use(async function(req, res, next) {
   if (req.path.indexOf("/c/") !== -1) {
     let ar = req.path.split("/");
     let clientName = ar[2];
-    console.log(clientName);
     let client = await ClientServices.find({'systemName' : clientName });
-    console.log(client);
-    if(!client){
+    if(!client || client.length === 0){
       return res.redirect("/customer/hire");
     }
     CustomerServices.isRunning(client, async function(r1){
