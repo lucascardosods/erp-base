@@ -68,6 +68,8 @@ customerRouter = function(router) {
       req.body.message = {"error" : "Falha na ativação."};
       return CustomerController.loadDashboard(req, res);
     }
+    var waitTill = new Date(new Date().getTime() + 5 * 1000);
+    while(waitTill > new Date()){}
     req.body.message = {"success" : "Usuário ativado com sucesso."};
     return CustomerController.loadDashboard(req, res);
   });
